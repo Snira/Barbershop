@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Appointment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\Appointment as AppointmentResource;
 use App\Http\Resources\AppointmentCollection;
@@ -21,23 +22,38 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-        return Appointment::create($request->all());
+        $appointment = new Appointment();
+        $appointment->barber = $request->barber;
+        $appointment->date = $request->date;
+        $appointment->time = $request->time;
+        $appointment->created_at = Carbon::now();
+        $appointment->updated_at = Carbon::now();
+
+        $appointment->save();
+
+        return new AppointmentResource($appointment);
     }
 
     public function update(Request $request, $id)
     {
-        $article = Appointment::findOrFail($id);
-        $article->update($request->all());
+        $appointment = Appointment::findOrFail($id);
+        $appointment->barber = $request->barber;
+        $appointment->date = $request->date;
+        $appointment->time = $request->time;
+        $appointment->created_at = Carbon::now();
+        $appointment->updated_at = Carbon::now();
 
-        return $article;
+        $appointment->save();
+
+        return new AppointmentResource($appointment);
     }
 
-    public function delete(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
-        $article = Appointment::findOrFail($id);
-        $article->delete();
+        $appointment = Appointment::find($id);
+        $appointment->delete();
 
-        return 204;
+        return response('Deleted.', 204);
     }
 
 }
