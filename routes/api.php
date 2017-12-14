@@ -20,4 +20,4 @@ use App\Http\Resources\AppointmentCollection;
 //Route::get('/appointment/{id}','AppointmentController@show');
 //Route::post('/appointments', 'AppointmentController@store');
 
-Route::resource('/appointments', 'AppointmentController');
+Route::apiResource('/appointments', 'AppointmentController');

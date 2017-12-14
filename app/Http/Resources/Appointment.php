@@ -16,22 +16,23 @@ class Appointment extends Resource
      */
     public function toArray($request)
     {
+        Resource::withoutWrapping();
         $id = $this->id;
-
         return [
-            'item' => [
-                'data'  => [
-                    'id'         => $id,
-                    'barber'     => $this->barber,
-                    'date'       => $this->date,
-                    'time'       => $this->time,
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
+            'id'         => $id,
+            'barber'     => $this->barber,
+            'date'       => $this->date,
+            'time'       => $this->time,
+            '_links' => [
+                'self' => [
+                    "href" => "http://gbhavelaar.nl/api/appointments/".$id
                 ],
-                'links' => [
-                    'self' => "/api/appointment/".$id,
+                'collection' => [
+                    "href" => "http://gbhavelaar.nl/api/appointments"
                 ]
+
             ]
+
         ];
     }
 }
